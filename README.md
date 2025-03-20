@@ -1,6 +1,7 @@
 # MIS-CaseStudy
 
-****Project Overview****
+**Project Overview**
+
 The Park & Ride application allows users to find and book parking spaces in urban areas while offering additional features like ride-sharing, parking reservations, and a smooth user experience. The app leverages real-time parking management systems and integrates with payment gateways like Razorpay for parking and subscription payments.
 
 This application also supports OAuth authentication for a secure login process via Google. It integrates Google Maps API for location-based services, helping users find and book parking spaces effortlessly.
