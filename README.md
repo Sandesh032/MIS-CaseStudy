@@ -64,7 +64,24 @@ Configure Firebase Authentication for OAuth integration in your google-services.
 **4. Razorpay Payment Integration**
 Create a Razorpay account, get your API key, and integrate it into the backend for payment processing.
 
+
+**Screenshots**
+
+User Profile
+![WhatsApp Image 2025-03-21 at 01 48 34_228068af](https://github.com/user-attachments/assets/d5d5049c-b956-42b4-8d63-9e9f30f874f2)
+
+Book Parking Slot
+![WhatsApp Image 2025-03-21 at 01 48 34_7eec056f](https://github.com/user-attachments/assets/6faf2e76-6dfd-468a-ba5a-4a8d1564458d)
+
+Payment Options
+![WhatsApp Image 2025-03-21 at 01 48 33_4c640e7b](https://github.com/user-attachments/assets/21f0a771-7307-4292-9903-679fb77e4385)
+
+Searching for locations using google map's place API
+![WhatsApp Image 2025-03-21 at 01 48 33_4c640e7b](https://github.com/user-attachments/assets/d65877ea-004e-4793-a547-7cee14ff4ee6)
+
+Ride Booking
 ![WhatsApp Image 2025-03-21 at 01 48 33_56f5fe9e](https://github.com/user-attachments/assets/e9d2b795-985a-4774-a702-c4579d0fbfd9)
+
 
 
 **Offline Functionality**
