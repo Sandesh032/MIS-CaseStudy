@@ -30,9 +30,9 @@ MySQL: Stores parking space data, user profiles, and ride history.
 Firebase Firestore: Stores user-specific data like ride history, parking bookings, etc.
 
 
-**How to Set Up the Project
+**How to Set Up the Project**
 
-1. Clone the Repository**
+**1. Clone the Repository**
 bash
 Copy
 Edit
