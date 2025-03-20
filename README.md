@@ -1,4 +1,4 @@
-![WhatsApp Image 2025-03-21 at 01 56 53_94df3aa1](https://github.com/user-attachments/assets/c0379ecc-3456-449e-a83e-2714979d71ac)# MIS-CaseStudy
+ # MIS-CaseStudy
 
 **Project Overview**
 
