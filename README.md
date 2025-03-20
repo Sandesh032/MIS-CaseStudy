@@ -64,6 +64,9 @@ Configure Firebase Authentication for OAuth integration in your google-services.
 **4. Razorpay Payment Integration**
 Create a Razorpay account, get your API key, and integrate it into the backend for payment processing.
 
+![WhatsApp Image 2025-03-21 at 01 48 33_56f5fe9e](https://github.com/user-attachments/assets/e9d2b795-985a-4774-a702-c4579d0fbfd9)
+
+
 **Offline Functionality**
 The application is designed to work offline by using SharedPreferences to store ride history and parking history locally when the internet is not available. The data is loaded from SharedPreferences and updated when an internet connection is available.
 
