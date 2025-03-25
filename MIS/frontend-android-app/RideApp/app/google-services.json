@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "623334048704",
+    "project_id": "parknride-e541d",
+    "storage_bucket": "parknride-e541d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623334048704:android:7b6259a75d5bcd91283e25",
+        "android_client_info": {
+          "package_name": "com.example.parkingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "623334048704-it053jblnlunnmtnqsam7n5f3s7le42c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCz0n0S4B9DnIqfinKN4pchg1Az2kCXnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "623334048704-it053jblnlunnmtnqsam7n5f3s7le42c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623334048704:android:765131ffea50c7fe283e25",
+        "android_client_info": {
+          "package_name": "com.example.rideapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "623334048704-it053jblnlunnmtnqsam7n5f3s7le42c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCz0n0S4B9DnIqfinKN4pchg1Az2kCXnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "623334048704-it053jblnlunnmtnqsam7n5f3s7le42c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
