@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            // Redirect user based on authentication state
+            // Redirect user based on authentication success or failure
             LaunchedEffect(user) {
                 if (user != null) {
                     navController.navigate("home") {
