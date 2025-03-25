@@ -30,7 +30,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 @Composable
 fun LoginScreen(navController: NavHostController, auth: FirebaseAuth) {
     val context = LocalContext.current
-    var isLoading by remember { mutableStateOf(false) }  // State for loading indicator
+    var isLoading by remember { mutableStateOf(false) }     // To show circular loading icon
 
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
@@ -38,7 +38,7 @@ fun LoginScreen(navController: NavHostController, auth: FirebaseAuth) {
             try {
                 val account = task.getResult(ApiException::class.java)
                 val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-                isLoading = true  // Show loading when authentication starts
+                isLoading = true
                 auth.signInWithCredential(credential).addOnCompleteListener { task ->
                     isLoading = false  // Hide loading after authentication completes
                     if (task.isSuccessful) {
@@ -63,7 +63,7 @@ fun LoginScreen(navController: NavHostController, auth: FirebaseAuth) {
     ) {
         // App Logo
         Image(
-            painter = painterResource(id = R.drawable.car_image), // Replace with your app logo
+            painter = painterResource(id = R.drawable.car_image),
             contentDescription = "App Logo",
             modifier = Modifier.size(120.dp)
         )
@@ -79,18 +79,18 @@ fun LoginScreen(navController: NavHostController, auth: FirebaseAuth) {
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // Google Sign-In Button with Icon
+        // Google Sign-In Button
         Row(
             modifier = Modifier
                 .clickable {
-                    if (!isLoading) signInWithGoogle(context, launcher)  // Prevent multiple clicks
+                    if (!isLoading) signInWithGoogle(context, launcher)
                 }
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.google), // Local drawable image
+                painter = painterResource(id = R.drawable.google),
                 contentDescription = "Google Icon",
                 modifier = Modifier.size(36.dp)
             )
@@ -100,7 +100,7 @@ fun LoginScreen(navController: NavHostController, auth: FirebaseAuth) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Show Circular Progress Indicator when loading
+        // Show Circular progress indicator when loading
         if (isLoading) {
             CircularProgressIndicator(
                 color = MaterialTheme.colorScheme.primary,

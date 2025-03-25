@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.rideapp.appui.*
+import com.example.rideapp.models.ParkingSpot
 import com.example.rideapp.models.ProfileViewModel
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -32,11 +33,10 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             var user by remember { mutableStateOf(auth.currentUser) }
 
-            // Store Parking History Temporarily
             var parkingHistory by remember { mutableStateOf<List<ParkingSpot>>(emptyList()) }
 
             fun handlePaymentSuccess(parkingSpot: ParkingSpot) {
-                parkingHistory = parkingHistory + parkingSpot // Add booking to history
+                parkingHistory = parkingHistory + parkingSpot
             }
 
             NavHost(navController, startDestination = "loading") {

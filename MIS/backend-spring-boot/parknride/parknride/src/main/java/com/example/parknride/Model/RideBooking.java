@@ -2,9 +2,11 @@ package com.example.parknride.Model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "ride_bookings")
-public class RideBooking {
+public class RideBooking implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

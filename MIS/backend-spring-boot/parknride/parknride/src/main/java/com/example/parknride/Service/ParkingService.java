@@ -5,6 +5,8 @@ import com.example.parknride.Model.Reservation;
 import com.example.parknride.Repo.ParkingSlotRepository;
 import com.example.parknride.Repo.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +26,7 @@ public class ParkingService {
         return parkingSlotRepository.save(slot);
     }
 
+    @Cacheable(value = "availableSlots")
     public List<ParkingSlot> getAvailableSlots() {
         return parkingSlotRepository.findAll();
     }
@@ -59,6 +62,7 @@ public class ParkingService {
         return reservationRepository.save(reservation);
     }
 
+    @CacheEvict(value = "availableSlots", allEntries = true)
     public void cancelReservation(Long reservationId) {
         Optional<Reservation> reservationOpt = reservationRepository.findById(reservationId);
 

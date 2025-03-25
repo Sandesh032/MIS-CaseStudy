@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.rideapp.models.ParkingSpot
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.compose.*
 import com.google.android.libraries.places.api.Places
@@ -41,9 +42,30 @@ fun ParkingScreen(navController: NavHostController, onPaymentSuccess: (ParkingSp
     // Parking locations with availability details
     val parkingLocations = remember {
         listOf(
-            ParkingSpot("1", "Chennai Tech Park", LatLng(12.8232, 80.0457), mutableStateOf(2), "8 AM - 10 PM", 50),
-            ParkingSpot("2", "SRM Dental Block", LatLng(12.8196, 80.0442), mutableStateOf(5), "8 AM - 10 PM", 40),
-            ParkingSpot("3", "Main Campus Building", LatLng(12.8208, 80.0383), mutableStateOf(1), "8 AM - 10 PM", 30)
+            ParkingSpot(
+                "1",
+                "Chennai Tech Park",
+                LatLng(12.8232, 80.0457),
+                mutableStateOf(2),
+                "8 AM - 10 PM",
+                50
+            ),
+            ParkingSpot(
+                "2",
+                "SRM Dental Block",
+                LatLng(12.8196, 80.0442),
+                mutableStateOf(5),
+                "8 AM - 10 PM",
+                40
+            ),
+            ParkingSpot(
+                "3",
+                "Main Campus Building",
+                LatLng(12.8208, 80.0383),
+                mutableStateOf(1),
+                "8 AM - 10 PM",
+                30
+            )
         )
     }
 
@@ -89,7 +111,7 @@ fun ParkingScreen(navController: NavHostController, onPaymentSuccess: (ParkingSp
                 value = searchQuery,
                 onValueChange = {
                     searchQuery = it
-                    fetchLocationSuggestions(it.text) // Fetch autocomplete suggestions
+                    fetchLocationSuggestions(it.text)
                 },
                 label = { Text("Search for parking...") },
                 modifier = Modifier
@@ -97,7 +119,6 @@ fun ParkingScreen(navController: NavHostController, onPaymentSuccess: (ParkingSp
                     .padding(8.dp)
             )
 
-            // Show autocomplete suggestions
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -118,7 +139,7 @@ fun ParkingScreen(navController: NavHostController, onPaymentSuccess: (ParkingSp
                 }
             }
 
-            // Google Map
+            // Google Map View
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState
@@ -140,18 +161,8 @@ fun ParkingScreen(navController: NavHostController, onPaymentSuccess: (ParkingSp
         }
     }
 
-    // Show booking dialog when a parking spot is clicked
+    // Booking dialog
     if (showDialog && selectedParking != null) {
-        ParkingBookingDialog(selectedParking!!, onDismiss = { showDialog = false })
+        ParkingBookingDialog(navController, selectedParking!!, onDismiss = { showDialog = false })
     }
 }
-
-// Parking Spot Data Class
-data class ParkingSpot(
-    val id: String,
-    val name: String,
-    val location: LatLng,
-    var availableSpots: MutableState<Int>,
-    val timing: String,
-    val pricePerHour: Int
-)

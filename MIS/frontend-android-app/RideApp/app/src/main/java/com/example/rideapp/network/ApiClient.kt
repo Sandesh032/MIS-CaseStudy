@@ -7,7 +7,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiClient {
     const val BASE_URL = "http://10.3.169.207:8080/api/"
 
-    // Simple OkHttpClient without logging
     private val httpClient = OkHttpClient.Builder().build()
 
     // Retrofit instance
@@ -27,7 +26,6 @@ object ApiClient {
         retrofit.create(RideApiService::class.java)
     }
 
-    // Generic function to create API services
     fun <T> createService(service: Class<T>): T {
         return retrofit.create(service)
     }

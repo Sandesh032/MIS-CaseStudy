@@ -3,6 +3,8 @@ package com.example.parknride.Service;
 import com.example.parknride.DTO.ParkingHistoryRequest;
 import com.example.parknride.Model.ParkingHistory;
 import com.example.parknride.Repo.ParkingHistoryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +12,10 @@ import java.util.List;
 
 @Service
 public class ParkingHistoryService {
-
     @Autowired
     private final ParkingHistoryRepository repository;
+
+    Logger logger = LoggerFactory.getLogger(ParkingHistoryService.class);
 
     public ParkingHistoryService(ParkingHistoryRepository parkingHistoryRepository) {
         this.repository = parkingHistoryRepository;

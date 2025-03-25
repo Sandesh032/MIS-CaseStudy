@@ -21,6 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.rideapp.models.ParkingSpot
 import com.example.rideapp.network.ParkingRepository
 import com.example.rideapp.payment.PaymentActivity
 import com.razorpay.Checkout
@@ -30,7 +33,7 @@ import java.io.OutputStream
 
 @SuppressLint("ContextCastToActivity")
 @Composable
-fun ParkingBookingDialog(parkingSpot: ParkingSpot, onDismiss: () -> Unit) {
+fun ParkingBookingDialog(navController: NavController, parkingSpot: ParkingSpot, onDismiss: () -> Unit) {
     val context = LocalContext.current as Activity
     var paymentSuccess by remember { mutableStateOf(false) }
     var qrBitmap by remember { mutableStateOf<Bitmap?>(null) }
@@ -50,14 +53,20 @@ fun ParkingBookingDialog(parkingSpot: ParkingSpot, onDismiss: () -> Unit) {
             }
 
             // Generate QR Code
-            qrBitmap = generateQRCode("Booking ID: $paymentId\nLocation: ${parkingSpot.name}\nTime: ${parkingSpot.timing}")
+            qrBitmap =
+                generateQRCode("Booking ID: $paymentId\nLocation: ${parkingSpot.name}\nTime: ${parkingSpot.timing}")
             paymentSuccess = true
 
-            // 🔹 Call API to save booking history
+            // Call API to save booking history
             coroutineScope.launch {
-                val success = ParkingRepository.storeParkingHistory(parkingSpot, paymentId ?: "Unknown", context)
+                val success = ParkingRepository.storeParkingHistory(
+                    parkingSpot,
+                    paymentId ?: "Unknown",
+                    context
+                )
                 if (!success) {
-                    Toast.makeText(context, "Failed to store booking history!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Failed to store booking history!", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
         } else {
@@ -117,6 +126,14 @@ fun ParkingBookingDialog(parkingSpot: ParkingSpot, onDismiss: () -> Unit) {
                 ) {
                     Text("Download QR Code")
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = {
+                        navController.navigate("profile")
+                    }
+                ) {
+                    Text("Go to Profile")
+                }
             }
         },
         dismissButton = {
@@ -130,7 +147,7 @@ fun ParkingBookingDialog(parkingSpot: ParkingSpot, onDismiss: () -> Unit) {
 // Razorpay Payment Function
 fun startPayment(activity: Activity, amount: Int, onDismiss: () -> Unit) {
     val checkout = Checkout()
-    checkout.setKeyID("rzp_test_9YcQ0P4jxs8sQ6") // Use your Razorpay key
+    checkout.setKeyID("rzp_test_9YcQ0P4jxs8sQ6")
 
     try {
         val options = JSONObject().apply {
@@ -156,7 +173,11 @@ fun generateQRCode(text: String): Bitmap? {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
         for (x in 0 until width) {
             for (y in 0 until height) {
-                bitmap.setPixel(x, y, if (bitMatrix[x, y]) android.graphics.Color.BLACK else android.graphics.Color.WHITE)
+                bitmap.setPixel(
+                    x,
+                    y,
+                    if (bitMatrix[x, y]) android.graphics.Color.BLACK else android.graphics.Color.WHITE
+                )
             }
         }
         bitmap
@@ -175,7 +196,7 @@ fun saveQRCodeToStorage(bitmap: Bitmap, context: Context) {
         put(
             MediaStore.Images.Media.RELATIVE_PATH,
             Environment.DIRECTORY_PICTURES
-        ) // Saves it in the Pictures folder
+        ) // Saves it in the gallery
     }
 
     val resolver = context.contentResolver

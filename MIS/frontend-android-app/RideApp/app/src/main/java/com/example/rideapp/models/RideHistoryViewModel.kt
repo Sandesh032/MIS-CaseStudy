@@ -14,16 +14,13 @@ class RideHistoryViewModel : ViewModel() {
     private val _isLoading = mutableStateOf(true)
     val isLoading: State<Boolean> get() = _isLoading
 
-    // This function would call your backend or data source to get ride history
     fun fetchRideHistory() {
         _isLoading.value = true
-        // Replace this with your backend logic
         viewModelScope.launch {
             try {
-                // Simulate network call or database query (replace with your actual API call)
                 delay(2000)
 
-                // Sample data to simulate the backend response
+                // Sample data
                 val response = listOf(
                     mapOf("id" to 2, "userId" to "8bUjtFOKcfdrW9SGluag8dG3Si53", "vehicleType" to "Bike", "distance" to "23.17 km", "fare" to "579.15"),
                     mapOf("id" to 4, "userId" to "8bUjtFOKcfdrW9SGluag8dG3Si53", "vehicleType" to "Bike", "distance" to "23.17 km", "fare" to "579.15")

@@ -19,12 +19,12 @@ object RideRepository {
         val rideHistory = RideHistory(userId, vehicleType, distance, fare, paymentId)
 
         return try {
-            // Attempt to save the ride history (e.g., via an API call)
-            rideApiService.bookRide(rideHistory) // Make the API call
-            true // If the API call was successful
+            // Save the ride history
+            rideApiService.bookRide(rideHistory)
+            true // Successful API call
         } catch (e: Exception) {
             Log.e("RideRepository", "Error saving ride history: ${e.localizedMessage}")
-            false // If there was an error
+            false   // Unsuccessful API call
         }
     }
 

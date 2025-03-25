@@ -16,8 +16,8 @@ fun LoadingScreen(navController: NavController) {
     var position by remember { mutableStateOf(0f) }
 
     LaunchedEffect(Unit) {
-        val duration = 1500L // Default animation duration
-        val steps = 50 // Default steps for smooth transition
+        val duration = 1500L // Animation duration
+        val steps = 50 // No. of steps
         val stepDelay = duration / steps
         val increment = 8f
 
@@ -34,7 +34,7 @@ fun LoadingScreen(navController: NavController) {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.car_image), // Default image
+            painter = painterResource(id = R.drawable.car_image), // App logo
             contentDescription = "Vehicle",
             modifier = Modifier.offset(x = position.dp)
         )

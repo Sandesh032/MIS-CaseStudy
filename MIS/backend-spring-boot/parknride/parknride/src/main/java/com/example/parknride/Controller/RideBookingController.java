@@ -5,6 +5,8 @@ import com.example.parknride.Service.RideBookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,16 +22,18 @@ public class RideBookingController {
     Logger logger = LoggerFactory.getLogger(RideBookingController.class);
 
     @PostMapping("/book")
-    public ResponseEntity<RideBooking> bookRide(@RequestBody RideBooking rideBooking) {
+    @CachePut(value = "bookride", key = "#rideBooking.userId")
+    public RideBooking bookRide(@RequestBody RideBooking rideBooking) {
         RideBooking savedRide = rideBookingService.bookRide(rideBooking);
         logger.trace("Ride booking inserted with id: " + savedRide.getId());
-        return ResponseEntity.ok(savedRide);
+        return savedRide;
     }
 
     @GetMapping("/history/{userId}")
-    public ResponseEntity<List<RideBooking>> getUserRides(@PathVariable String userId) {
+    @Cacheable(value = "bookride", key = "#userId")
+    public List<RideBooking> getUserRides(@PathVariable String userId) {
         List<RideBooking> rides = rideBookingService.getRidesByUserId(userId);
         logger.trace("Ride booking details requested for id: " + userId);
-        return ResponseEntity.ok(rides);
+        return rides;
     }
 }

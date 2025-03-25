@@ -32,7 +32,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
 
     private fun startPayment(amount: Int) {
         val checkout = Checkout()
-        checkout.setKeyID("rzp_test_9YcQ0P4jxs8sQ6") // Replace with actual Razorpay Key
+        checkout.setKeyID("rzp_test_9YcQ0P4jxs8sQ6")
 
         try {
             val options = JSONObject().apply {
@@ -40,9 +40,9 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
                 put("description", "Parking Slot Booking")
                 put("currency", "INR")
                 put("amount", amount)
-                put("prefill", JSONObject().apply {
-                    put("email", "user@example.com") // Prefill email (optional)
-                    put("contact", "9999999999") // Prefill phone number (optional)
+                put("prefill", JSONObject().apply {     // Only for testing purpose
+                    put("email", "user@example.com")
+                    put("contact", "9999999999")
                 })
             }
 
@@ -65,7 +65,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
         setResult(Activity.RESULT_OK, intent)
 
         val rideHistory = RideHistory(
-            userId = userId,  // Add userId here
+            userId = userId,
             vehicleType = intent.getStringExtra("vehicleType") ?: "Unknown",
             distance = intent.getStringExtra("distance") ?: "Unknown",
             fare = intent.getStringExtra("fare") ?: "0",
@@ -82,10 +82,10 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
                 context = this@PaymentActivity
             )
 
-            // If success, set the result as OK, otherwise CANCELED
+            // If successful, set payment status to ok
             if (success) {
                 setResult(Activity.RESULT_OK)
-            } else {
+            } else {    // Else, set to cancelled
                 setResult(Activity.RESULT_CANCELED)
             }
 

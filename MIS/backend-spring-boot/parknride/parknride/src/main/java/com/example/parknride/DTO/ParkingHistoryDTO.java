@@ -1,6 +1,8 @@
 package com.example.parknride.DTO;
 
-public class ParkingHistoryDTO {
+import java.io.Serializable;
+
+public class ParkingHistoryDTO implements Serializable {
     private String name;
     private String location;
     private int pricePerHour;

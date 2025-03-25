@@ -1,11 +1,13 @@
 package com.example.parknride.Model;
 
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
 @Table(name = "parking_history")
-public class ParkingHistory {
+public class ParkingHistory implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

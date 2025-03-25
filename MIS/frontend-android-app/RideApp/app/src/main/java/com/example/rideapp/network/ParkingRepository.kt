@@ -2,8 +2,8 @@ package com.example.rideapp.network
 
 import android.app.Activity
 import android.util.Log
-import com.example.rideapp.appui.ParkingSpot
 import com.example.rideapp.models.ParkingHistory
+import com.example.rideapp.models.ParkingSpot
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,7 +12,7 @@ object ParkingRepository {
     private val apiService = ApiClient.createService(ParkingApiService::class.java)
 
     suspend fun storeParkingHistory(parkingSpot: ParkingSpot, paymentId: String, context: Activity): Boolean {
-        return withContext(Dispatchers.IO) { // Run in background
+        return withContext(Dispatchers.IO) {
             try {
                 val history = ParkingHistory(
                     userId = FirebaseAuth.getInstance().currentUser?.uid ?: "Unknown",

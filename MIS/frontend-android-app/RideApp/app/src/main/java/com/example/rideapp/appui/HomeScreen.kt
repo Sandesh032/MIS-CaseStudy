@@ -11,10 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.example.rideapp.R
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -24,7 +26,7 @@ fun HomeScreen(auth: FirebaseAuth, navController: NavHostController) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Profile Icon in Top-Right Corner
+        // Profile Icon
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -43,7 +45,7 @@ fun HomeScreen(auth: FirebaseAuth, navController: NavHostController) {
             )
         }
 
-        // Main Content - Welcome & Options
+        // Home Screen
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -59,14 +61,14 @@ fun HomeScreen(auth: FirebaseAuth, navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // 🚗 Parking Option
+            // Parking Option
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp)
                     .clickable { navController.navigate("parking") },
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF64B5F6))
+                colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.cont1))
             ) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -78,14 +80,14 @@ fun HomeScreen(auth: FirebaseAuth, navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // 🚕 Ride Sharing Option
+            // Ride Sharing Option
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp)
                     .clickable { navController.navigate("ride_sharing") },
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF4CAF50))
+                colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.cont2))
             ) {
                 Box(
                     modifier = Modifier.fillMaxSize(),

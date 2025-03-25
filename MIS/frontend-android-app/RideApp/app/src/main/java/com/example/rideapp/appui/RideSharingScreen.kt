@@ -8,8 +8,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -66,12 +66,12 @@ fun RideSharingScreen(navController: NavHostController) {
     fun searchPlaces(query: String, isStart: Boolean) {
         if (query.isEmpty()) return
         coroutineScope.launch(Dispatchers.IO) {
-            delay(300) // Debounce API call
+            delay(300) // Wait for the API to initialize
 
             try {
                 val request = PlacesApi.textSearchQuery(geoApiContext, query)
-                    .location(ApiLatLng(13.0827, 80.2707)) // Chennai's LatLng
-                    .radius(50000) // 50 km max
+                    .location(ApiLatLng(13.0827, 80.2707))
+                    .radius(50000) // Search space reduced to 50km
 
                 val results = request.await().results
                 val places = results.map { it.name }
@@ -109,7 +109,6 @@ fun RideSharingScreen(navController: NavHostController) {
                     }
                 }
             } catch (e: Exception) {
-                // Handle error
             }
         }
     }
@@ -123,6 +122,7 @@ fun RideSharingScreen(navController: NavHostController) {
         val lon2 = Math.toRadians(endLocation!!.longitude)
         val dlat = lat2 - lat1
         val dlon = lon2 - lon1
+        // Haversine formula to calculate the distance
         val a = sin(dlat / 2).pow(2) + cos(lat1) * cos(lat2) * sin(dlon / 2).pow(2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
         return R * c // Distance in km
@@ -130,27 +130,14 @@ fun RideSharingScreen(navController: NavHostController) {
 
     fun selectVehicle(vehicle: String, fare: Double) {
         totalDistance = "%.2f km".format(calculateDistance())
-        selectedFare = "${"%.2f".format(fare)}" // Just use the passed fare
+        selectedFare = "${"%.2f".format(fare)}"
         selectedVehicle = vehicle
-    }
-
-    fun calculateFare(distance: Double): String {
-        if (distance == 0.0) return "Select locations first"
-        val singlePricing = mapOf("Bike" to 25, "Auto" to 40, "Cab" to 80)
-        val sharedPricing = mapOf("Auto" to 40 / 3.0, "Cab" to 80 / 4.0)
-        return if (!bookingMode) {
-            "Bike: ${"%.2f".format(distance * singlePricing["Bike"]!!)} | " +
-                    "Auto: ${"%.2f".format(distance * singlePricing["Auto"]!!)} | " +
-                    "Cab: ${"%.2f".format(distance * singlePricing["Cab"]!!)}"
-        } else {
-            "Auto (Shared): ${"%.2f".format(distance * sharedPricing["Auto"]!!)} | " +
-                    "Cab (Shared): ${"%.2f".format(distance * sharedPricing["Cab"]!!)}"
-        }
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
         OutlinedTextField(
@@ -162,14 +149,13 @@ fun RideSharingScreen(navController: NavHostController) {
             label = { Text("Start Location") },
             modifier = Modifier.fillMaxWidth()
         )
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(startSuggestions) { suggestion ->
-                Text(suggestion, modifier = Modifier
-                    .clickable {
-                        getLatLngFromPlaceName(suggestion, true)
-                    }
-                    .padding(8.dp))
-            }
+        startSuggestions.forEach { suggestion ->
+            Text(
+                suggestion,
+                modifier = Modifier
+                    .clickable { getLatLngFromPlaceName(suggestion, true) }
+                    .padding(8.dp)
+            )
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -183,19 +169,19 @@ fun RideSharingScreen(navController: NavHostController) {
             label = { Text("End Location") },
             modifier = Modifier.fillMaxWidth()
         )
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(endSuggestions) { suggestion ->
-                Text(suggestion, modifier = Modifier
-                    .clickable {
-                        getLatLngFromPlaceName(suggestion, false)
-                    }
-                    .padding(8.dp))
-            }
+
+        endSuggestions.forEach { suggestion ->
+            Text(
+                suggestion,
+                modifier = Modifier
+                    .clickable { getLatLngFromPlaceName(suggestion, false) }
+                    .padding(8.dp)
+            )
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Smaller Map
+        // Google Map View
         GoogleMap(
             modifier = Modifier
                 .fillMaxWidth()
@@ -262,7 +248,6 @@ fun RideSharingScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Calculate Fare Button
         Button(onClick = {
             if (selectedVehicle != null) {
                 val distance = calculateDistance()
@@ -281,10 +266,10 @@ fun RideSharingScreen(navController: NavHostController) {
                 Toast.makeText(context, "Payment Successful! ID: $paymentId", Toast.LENGTH_LONG).show()
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    // Fetch the userId from Firebase Authentication or another source
+                    // Fetch the userId from Firebase
                     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "Unknown"
 
-                    // Now pass userId along with other parameters to the storeRideBookingHistory function
+                    // Call the store function to save the ride history
                     val success = RideRepository.storeRideBookingHistory(
                         userId = userId,  // Pass userId here
                         vehicleType = selectedVehicle ?: "Unknown",
@@ -294,7 +279,7 @@ fun RideSharingScreen(navController: NavHostController) {
                         context = context
                     )
 
-                    // Check if the operation was successful
+                    // Alert in case of unsuccessful call
                     if (!success) {
                         Toast.makeText(context, "Failed to store ride booking history!", Toast.LENGTH_LONG).show()
                     }

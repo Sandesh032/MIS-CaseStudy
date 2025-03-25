@@ -7,6 +7,8 @@ import com.example.parknride.Service.ParkingHistoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,17 +28,19 @@ public class ParkingHistoryController {
     }
 
     @PostMapping
-    public ResponseEntity<ParkingHistory> storeParkingHistory(@RequestBody ParkingHistoryRequest request) {
+    @CachePut(value = "users", key = "#request.userId")
+    public ParkingHistory storeParkingHistory(@RequestBody ParkingHistoryRequest request) {
         ParkingHistory savedHistory = service.saveParkingHistory(request);
         logger.trace("Parking history inserted with id: " + savedHistory.getParkingId());
-        return ResponseEntity.ok(savedHistory);
+        return savedHistory;
     }
 
+    @Cacheable(value = "users", key = "#userId")
     @GetMapping("/{userId}")
     public List<ParkingHistoryDTO> getParkingHistory(@PathVariable String userId) {
         List<ParkingHistory> fullHistory = service.getParkingHistoryByUserId(userId);
         logger.trace("Parking history requested for id: " + userId);
-        // Convert to summary DTO
+        // Convert to ParkingHistory DTO
         return fullHistory.stream()
                 .map(history -> new ParkingHistoryDTO(history.getName(), history.getLocation(), history.getPricePerHour()))
                 .collect(Collectors.toList());
